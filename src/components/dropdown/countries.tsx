@@ -34,10 +34,18 @@ const CountryDropdown = ({ disabled }: CountryDropdownProps) => {
                         {countryValue ? (
                             <div className="flex items-end gap-2">
                                 <span>
-                                    {countries.find((country: CountryProps) => lowerCase(country.name) === countryValue)?.emoji}
+                                    {
+                                        countries.find(
+                                            (country: CountryProps) => lowerCase(country.name) === countryValue,
+                                        )?.emoji
+                                    }
                                 </span>
                                 <span>
-                                    {countries.find((country: CountryProps) => lowerCase(country.name) === countryValue)?.name}
+                                    {
+                                        countries.find(
+                                            (country: CountryProps) => lowerCase(country.name) === countryValue,
+                                        )?.name
+                                    }
                                 </span>
                             </div>
                         ) : (

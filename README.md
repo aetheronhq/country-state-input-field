@@ -21,17 +21,17 @@ The package exports two main components: `CountryDropdown` and `StateDropdown`. 
 ### Basic Usage
 
 ```jsx
-import React from 'react';
-import { CountryDropdown, StateDropdown } from 'country-state-input-field';
+import React from "react";
+import { CountryDropdown, StateDropdown } from "country-state-input-field";
 
 const App = () => {
-  return (
-    <div>
-      <h1>Country and State Selection</h1>
-      <CountryDropdown />
-      <StateDropdown />
-    </div>
-  );
+    return (
+        <div>
+            <h1>Country and State Selection</h1>
+            <CountryDropdown />
+            <StateDropdown />
+        </div>
+    );
 };
 
 export default App;
@@ -39,32 +39,35 @@ export default App;
 
 ### Using with State Management
 
-For a more integrated experience, you can use these components with a state management library like Zustand (which is included as a dependency). Here's an example:
+For a more integrated experience, you can use these components with a state management library like Zustand (which is
+included as a dependency). Here's an example:
 
 ```jsx
-import React from 'react';
-import { CountryDropdown, StateDropdown } from 'country-state-input-field';
-import { create } from 'zustand';
+import React from "react";
+import { CountryDropdown, StateDropdown } from "country-state-input-field";
+import { create } from "zustand";
 
 // Create a store to manage the selected country and state
 const useStore = create((set) => ({
-  country: '',
-  state: '',
-  setCountry: (country) => set({ country, state: '' }),
-  setState: (state) => set({ state }),
+    country: "",
+    state: "",
+    setCountry: (country) => set({ country, state: "" }),
+    setState: (state) => set({ state }),
 }));
 
 const App = () => {
-  const { country, state, setCountry, setState } = useStore();
+    const { country, state, setCountry, setState } = useStore();
 
-  return (
-    <div>
-      <h1>Country and State Selection</h1>
-      <CountryDropdown value={country} onChange={setCountry} />
-      <StateDropdown country={country} value={state} onChange={setState} />
-      <p>Selected: {country}, {state}</p>
-    </div>
-  );
+    return (
+        <div>
+            <h1>Country and State Selection</h1>
+            <CountryDropdown value={country} onChange={setCountry} />
+            <StateDropdown country={country} value={state} onChange={setState} />
+            <p>
+                Selected: {country}, {state}
+            </p>
+        </div>
+    );
 };
 
 export default App;
@@ -84,31 +87,32 @@ The example code can be found in the `example` directory.
 
 ## Features
 
-- Country selection dropdown
-- State/Province selection dropdown (populated based on selected country)
-- Customizable styling
-- TypeScript support
+-   Country selection dropdown
+-   State/Province selection dropdown (populated based on selected country)
+-   Customizable styling
+-   TypeScript support
 
 ## API
 
 ### CountryDropdown
 
-| Prop | Type | Description |
-|------|------|-------------|
-| value | string | The currently selected country |
+| Prop     | Type                      | Description                                  |
+| -------- | ------------------------- | -------------------------------------------- |
+| value    | string                    | The currently selected country               |
 | onChange | (country: string) => void | Callback function when a country is selected |
 
 ### StateDropdown
 
-| Prop | Type | Description |
-|------|------|-------------|
-| country | string | The currently selected country (used to filter states) |
-| value | string | The currently selected state |
-| onChange | (state: string) => void | Callback function when a state is selected |
+| Prop     | Type                    | Description                                            |
+| -------- | ----------------------- | ------------------------------------------------------ |
+| country  | string                  | The currently selected country (used to filter states) |
+| value    | string                  | The currently selected state                           |
+| onChange | (state: string) => void | Callback function when a state is selected             |
 
 ## Customization
 
-The components use Tailwind CSS for styling. You can customize the appearance by overriding the CSS classes or by providing your own class names through props (if implemented).
+The components use Tailwind CSS for styling. You can customize the appearance by overriding the CSS classes or by
+providing your own class names through props (if implemented).
 
 ## Development
 

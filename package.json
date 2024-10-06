@@ -1,6 +1,6 @@
 {
     "name": "country-state-input-field",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "description": "A customizable country and state dropdown component for React applications",
     "main": "dist/index.js",
     "module": "dist/index.esm.js",
@@ -85,6 +85,6 @@
     "license": "MIT",
     "repository": {
         "type": "git",
-        "url": "https://github.com/yourusername/country-state-input-field.git"
+        "url": "git+https://github.com/Cognitive-Creators-AI/country-state-input-field.git"
     }
 }
