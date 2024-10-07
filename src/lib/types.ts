@@ -2,6 +2,7 @@ export interface Country {
     id: number;
     name: string;
     emoji: string;
+    iso2: string; // This remains as iso2 for internal use
 }
 
 export interface State {
@@ -13,7 +14,7 @@ export interface State {
 export type DropdownItem = Country | State;
 
 export interface CountryInputProps {
-    onSelect: (country: Country) => void;
+    onSelect: (country: Country, countryCode: string) => void;
     className?: string;
     inputClassName?: string;
 }
@@ -45,7 +46,7 @@ export interface DropdownListProps {
 }
 
 export interface CountryStateInputProps {
-    onSelectCountry: (country: Country) => void;
+    onSelectCountry: (country: Country, countryCode: string) => void;
     onSelectState: (state: State) => void;
     containerClassName?: string;
     countryClassName?: string;

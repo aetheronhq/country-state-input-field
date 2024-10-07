@@ -25,9 +25,9 @@ export const CountryStateInput: React.FC<ExtendedCountryStateInputProps> = ({
     const [selectedCountry, setSelectedCountry] = useState<Country | null>(null);
 
     const handleCountrySelect = useCallback(
-        (country: Country) => {
+        (country: Country, countryCode: string) => {
             setSelectedCountry(country);
-            onSelectCountry(country);
+            onSelectCountry(country, countryCode);
         },
         [onSelectCountry],
     );

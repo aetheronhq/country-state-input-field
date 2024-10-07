@@ -22,10 +22,12 @@ export const DropdownInput: React.FC<ExtendedDropdownInputProps> = ({
         })}
         onClick={disabled ? undefined : onClick}
     >
-        <div className={classNames("flex w-full items-center rounded-md", {
-            "border border-gray-300": !inputClassName?.includes("border-none"),
-            "bg-white": !inputClassName?.includes("bg-"), // Default bg unless overridden
-        })}>
+        <div
+            className={classNames("flex w-full items-center rounded-md", {
+                "border border-gray-300": !inputClassName?.includes("border-none"),
+                "bg-white": !inputClassName?.includes("bg-"), // Default bg unless overridden
+            })}
+        >
             <input
                 type="text"
                 readOnly
@@ -36,7 +38,7 @@ export const DropdownInput: React.FC<ExtendedDropdownInputProps> = ({
                     { "text-gray-800": value && !inputClassName?.includes("text-") }, // Default text color if no override
                     { "text-gray-500": !value && !inputClassName?.includes("text-") }, // Default placeholder color if no override
                     { "cursor-not-allowed": disabled }, // Disabled styles
-                    inputClassName // Merge user-passed classes
+                    inputClassName, // Merge user-passed classes
                 )}
                 style={{ paddingRight: "48px" }} // Space for Chevron
                 disabled={disabled}
@@ -54,9 +56,16 @@ export const DropdownList: React.FC<DropdownListProps> = ({
     className,
     maxHeight = "300px",
 }) => (
-    <div className={classNames("absolute z-10 mt-1 w-full rounded-md shadow-lg", {
-        "border border-gray-300 bg-gray-800": !className?.includes("border-none") && !className?.includes("bg-"),
-    }, className)}>
+    <div
+        className={classNames(
+            "absolute z-10 mt-1 w-full rounded-md shadow-lg",
+            {
+                "border border-gray-300 bg-gray-800":
+                    !className?.includes("border-none") && !className?.includes("bg-"),
+            },
+            className,
+        )}
+    >
         <div className="border-b border-gray-700 p-2" style={{ paddingBottom: "0.25rem", paddingTop: "0.5rem" }}>
             <div className="flex items-center rounded-md bg-gray-700">
                 <Search className="ml-3 h-4 w-4 text-gray-400" style={{ marginRight: "0.5rem" }} />
@@ -67,13 +76,13 @@ export const DropdownList: React.FC<DropdownListProps> = ({
                     placeholder="Search..."
                     className={classNames(
                         "ml-2 w-full rounded-md p-1 text-white placeholder-gray-400 outline-none",
-                        { "bg-gray-700": !className?.includes("bg-") } // Default bg unless overridden
+                        { "bg-gray-700": !className?.includes("bg-") }, // Default bg unless overridden
                     )}
                     style={{ padding: "0.25rem" }}
                 />
             </div>
         </div>
-        <div style={{ maxHeight, overflowY: "auto", paddingTop: "0.25rem" }} className="mt-2 py-2 bg-nhir-input-box">
+        <div style={{ maxHeight, overflowY: "auto", paddingTop: "0.25rem" }} className="bg-nhir-input-box mt-2 py-2">
             {items.map((item) => (
                 <div
                     key={item.id}

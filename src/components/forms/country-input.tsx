@@ -18,7 +18,7 @@ export const CountryInput: React.FC<CountryInputProps> = ({ onSelect, className,
     const handleSelect = useCallback(
         (country: Country) => {
             setSelectedCountry(country);
-            onSelect(country);
+            onSelect(country, country.iso2); // We still use iso2 internally
             setIsOpen(false);
         },
         [onSelect],

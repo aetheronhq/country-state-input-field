@@ -3,6 +3,7 @@ export interface Country {
     id: number;
     name: string;
     emoji: string;
+    iso2: string;
 }
 export interface State {
     id: number;
@@ -11,7 +12,7 @@ export interface State {
 }
 export type DropdownItem = Country | State;
 export interface CountryInputProps {
-    onSelect: (country: Country) => void;
+    onSelect: (country: Country, countryCode: string) => void;
     className?: string;
     inputClassName?: string;
 }
@@ -39,7 +40,7 @@ export interface DropdownListProps {
     maxHeight?: string;
 }
 export interface CountryStateInputProps {
-    onSelectCountry: (country: Country) => void;
+    onSelectCountry: (country: Country, countryCode: string) => void;
     onSelectState: (state: State) => void;
     containerClassName?: string;
     countryClassName?: string;
