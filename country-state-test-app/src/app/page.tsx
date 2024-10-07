@@ -59,7 +59,7 @@ export default function Home() {
                 </div>
 
                 <div className="mt-8 text-center">
-                    <h2 className="text-xl font-bold mb-2">Selected Values:</h2>
+                    <h2 className="mb-2 text-xl font-bold">Selected Values:</h2>
                     <p>Country ID: {selectedCountryId}</p>
                     <p>Country Code: {selectedCountryCode}</p>
                     <p>State ID: {selectedStateId}</p>

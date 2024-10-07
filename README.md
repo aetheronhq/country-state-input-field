@@ -48,10 +48,7 @@ const App = () => {
                     setSelectedCountryCode(countryCode);
                 }}
             />
-            <StateInput
-                selectedCountryId={selectedCountryId}
-                onSelect={(state) => setSelectedStateId(state.id)}
-            />
+            <StateInput selectedCountryId={selectedCountryId} onSelect={(state) => setSelectedStateId(state.id)} />
         </div>
     );
 };
@@ -97,40 +94,40 @@ You can customize the appearance of the components using className props:
 
 ## Features
 
-- Country selection input with search functionality
-- State/Province selection input (populated based on selected country)
-- Combined Country-State input component
-- Customizable styling
-- TypeScript support
-- Returns both full country object and country code
+-   Country selection input with search functionality
+-   State/Province selection input (populated based on selected country)
+-   Combined Country-State input component
+-   Customizable styling
+-   TypeScript support
+-   Returns both full country object and country code
 
 ## API
 
 ### CountryStateInput
 
-| Prop                  | Type                                             | Description                                   |
-|-----------------------|--------------------------------------------------|-----------------------------------------------|
-| onSelectCountry       | (country: Country, countryCode: string) => void  | Callback function when a country is selected  |
-| onSelectState         | (state: State) => void                           | Callback function when a state is selected    |
-| containerClassName    | string                                           | Class name for the container div              |
-| countryClassName      | string                                           | Class name for the country input container    |
-| stateClassName        | string                                           | Class name for the state input container      |
-| countryInputClassName | string                                           | Class name for the country input element      |
-| stateInputClassName   | string                                           | Class name for the state input element        |
-| layout                | "horizontal" \| "vertical"                       | Layout direction for country and state inputs |
+| Prop                  | Type                                            | Description                                   |
+| --------------------- | ----------------------------------------------- | --------------------------------------------- |
+| onSelectCountry       | (country: Country, countryCode: string) => void | Callback function when a country is selected  |
+| onSelectState         | (state: State) => void                          | Callback function when a state is selected    |
+| containerClassName    | string                                          | Class name for the container div              |
+| countryClassName      | string                                          | Class name for the country input container    |
+| stateClassName        | string                                          | Class name for the state input container      |
+| countryInputClassName | string                                          | Class name for the country input element      |
+| stateInputClassName   | string                                          | Class name for the state input element        |
+| layout                | "horizontal" \| "vertical"                      | Layout direction for country and state inputs |
 
 ### CountryInput
 
-| Prop           | Type                                             | Description                                  |
-|----------------|--------------------------------------------------|----------------------------------------------|
-| onSelect       | (country: Country, countryCode: string) => void  | Callback function when a country is selected |
-| className      | string                                           | Class name for the container div             |
-| inputClassName | string                                           | Class name for the input element             |
+| Prop           | Type                                            | Description                                  |
+| -------------- | ----------------------------------------------- | -------------------------------------------- |
+| onSelect       | (country: Country, countryCode: string) => void | Callback function when a country is selected |
+| className      | string                                          | Class name for the container div             |
+| inputClassName | string                                          | Class name for the input element             |
 
 ### StateInput
 
 | Prop              | Type                   | Description                                |
-|-------------------|------------------------|--------------------------------------------|
+| ----------------- | ---------------------- | ------------------------------------------ |
 | selectedCountryId | number \| null         | The ID of the currently selected country   |
 | onSelect          | (state: State) => void | Callback function when a state is selected |
 | className         | string                 | Class name for the container div           |
