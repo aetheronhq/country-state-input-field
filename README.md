@@ -146,9 +146,15 @@ To set up the development environment:
 2. Install dependencies: `npm install` or `yarn install`
 3. Run the build process: `npm run build` or `yarn build`
 
-## Testing
+## Example Application
 
-This project includes a test app to demonstrate and test the usage of the components. To run the test app:
+This project includes a test app that demonstrates a working implementation of the country-state-input-field package.
+The test app showcases how to use the components in a real-world scenario and can serve as a reference for integrating
+the package into your own projects.
+
+### Running the Test App
+
+To run the test app:
 
 1. Build the main project: `npm run build` or `yarn build`
 2. Navigate to the test app directory: `cd country-state-test-app`
@@ -156,7 +162,15 @@ This project includes a test app to demonstrate and test the usage of the compon
 4. Run the development server: `npm run dev` or `yarn dev`
 5. Open your browser and navigate to `http://localhost:3000`
 
-The test app code can be found in the `country-state-test-app` directory.
+The test app code can be found in the `country-state-test-app` directory. It includes examples of:
+
+-   Using the CountryStateInput component
+-   Using CountryInput and StateInput components separately
+-   Handling selected values (country name, country code, state name)
+-   Applying custom styling to the components
+
+We encourage you to explore the test app code to see how you can implement and customize the country-state-input-field
+components in your own projects.
 
 ## Contributing
 

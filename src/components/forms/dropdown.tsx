@@ -75,7 +75,7 @@ export const DropdownList: React.FC<DropdownListProps> = ({
                     onChange={(e) => setFilter(e.target.value)}
                     placeholder="Search..."
                     className={classNames(
-                        "ml-2 w-full rounded-md p-1 text-white placeholder-gray-400 outline-none",
+                        "ml-2 w-full rounded-md p-1 text-gray-600 placeholder-gray-400 outline-none",
                         { "bg-gray-700": !className?.includes("bg-") }, // Default bg unless overridden
                     )}
                     style={{ padding: "0.25rem" }}

@@ -1,6 +1,6 @@
 {
     "name": "country-state-input-field",
-    "version": "1.0.3",
+    "version": "1.0.5",
     "description": "A customizable country and state dropdown component for React applications",
     "main": "dist/index.js",
     "module": "dist/index.esm.js",
