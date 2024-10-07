@@ -7,5 +7,7 @@ public
 .vscode
 README.md
 tailwind.config.js
-
-```
+country-state-test-app
+dist
+docs
+scripts

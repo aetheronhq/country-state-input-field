@@ -1,13 +1,16 @@
 {
     "name": "country-state-input-field",
-    "version": "1.0.1",
+    "version": "1.0.2",
     "description": "A customizable country and state dropdown component for React applications",
     "main": "dist/index.js",
     "module": "dist/index.esm.js",
     "types": "dist/index.d.ts",
     "type": "module",
     "files": [
-        "dist"
+        "dist",
+        "src",
+        "README.md",
+        "LICENSE"
     ],
     "scripts": {
         "build": "rollup -c",
@@ -19,7 +22,9 @@
         "test-all": "npm run check-format && npm run check-lint && npm run check-types && npm run build",
         "prepare": "husky install",
         "prepublishOnly": "npm run test-all",
-        "example": "npm run build && http-server ./example -p 8080 -c-1"
+        "example": "npm run build && http-server ./example -p 8080 -c-1",
+        "export-sourcecode": "python ./scripts/gpt_repository_loader.py ./src -o ./docs/country-state-input-field-src.txt",
+        "test-app": "npm run build && cd country-state-test-app && npm install & npm run dev"
     },
     "peerDependencies": {
         "react": "^18",
@@ -32,10 +37,9 @@
         "@radix-ui/react-slot": "^1.0.2",
         "class-variance-authority": "^0.7.0",
         "clsx": "^2.0.0",
-        "cmdk": "^0.2.0",
+        "cmdk": "^1.0.0",
         "lucide-react": "^0.298.0",
-        "tailwind-merge": "^2.1.0",
-        "zustand": "^4.4.7"
+        "tailwind-merge": "^2.1.0"
     },
     "devDependencies": {
         "@rollup/plugin-commonjs": "^25.0.8",

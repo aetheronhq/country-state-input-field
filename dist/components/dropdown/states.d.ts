@@ -1,3 +1,12 @@
 import React from "react";
-declare const StateDropdown: () => React.JSX.Element;
+interface StateDropdownProps {
+    id?: string;
+    name?: string;
+    value?: string;
+    className?: string;
+    onChange: (value: string) => void;
+    country: string;
+    disabled?: boolean;
+}
+declare const StateDropdown: React.FC<StateDropdownProps>;
 export default StateDropdown;

@@ -1,0 +1,112 @@
+[
+    {
+        "id": 1,
+        "name": "California",
+        "country_id": 1,
+        "country_code": "US",
+        "country_name": "United States",
+        "state_code": "CA",
+        "type": "state",
+        "latitude": "36.77826100",
+        "longitude": "-119.41793240"
+    },
+    {
+        "id": 2,
+        "name": "Texas",
+        "country_id": 1,
+        "country_code": "US",
+        "country_name": "United States",
+        "state_code": "TX",
+        "type": "state",
+        "latitude": "31.96859880",
+        "longitude": "-99.90181310"
+    },
+    {
+        "id": 3,
+        "name": "New York",
+        "country_id": 1,
+        "country_code": "US",
+        "country_name": "United States",
+        "state_code": "NY",
+        "type": "state",
+        "latitude": "40.71277530",
+        "longitude": "-74.00597280"
+    },
+    {
+        "id": 4,
+        "name": "Ontario",
+        "country_id": 2,
+        "country_code": "CA",
+        "country_name": "Canada",
+        "state_code": "ON",
+        "type": "province",
+        "latitude": "51.25377500",
+        "longitude": "-85.32321400"
+    },
+    {
+        "id": 5,
+        "name": "Quebec",
+        "country_id": 2,
+        "country_code": "CA",
+        "country_name": "Canada",
+        "state_code": "QC",
+        "type": "province",
+        "latitude": "52.93991590",
+        "longitude": "-73.54913610"
+    },
+    {
+        "id": 6,
+        "name": "Jalisco",
+        "country_id": 3,
+        "country_code": "MX",
+        "country_name": "Mexico",
+        "state_code": "JAL",
+        "type": "state",
+        "latitude": "20.65953820",
+        "longitude": "-103.34943760"
+    },
+    {
+        "id": 7,
+        "name": "England",
+        "country_id": 4,
+        "country_code": "GB",
+        "country_name": "United Kingdom",
+        "state_code": "ENG",
+        "type": "country",
+        "latitude": "52.35551770",
+        "longitude": "-1.17431970"
+    },
+    {
+        "id": 8,
+        "name": "Île-de-France",
+        "country_id": 5,
+        "country_code": "FR",
+        "country_name": "France",
+        "state_code": "IDF",
+        "type": "metropolitan region",
+        "latitude": "48.85661400",
+        "longitude": "2.35222190"
+    },
+    {
+        "id": 9,
+        "name": "Bavaria",
+        "country_id": 6,
+        "country_code": "DE",
+        "country_name": "Germany",
+        "state_code": "BY",
+        "type": "state",
+        "latitude": "48.79044720",
+        "longitude": "11.49788950"
+    },
+    {
+        "id": 10,
+        "name": "Tokyo",
+        "country_id": 7,
+        "country_code": "JP",
+        "country_name": "Japan",
+        "state_code": "13",
+        "type": "prefecture",
+        "latitude": "35.67619190",
+        "longitude": "139.65031060"
+    }
+]

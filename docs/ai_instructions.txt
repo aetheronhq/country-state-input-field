@@ -1,0 +1,7 @@
+the current sourcecode for this project is attached. I would like you to help me code the following changes.
+
+- add an option for CountryStateInput to support horizontal or vertical display. I.e. the country and state fields are side by side for horizontal or states is underneath countries for vertical.
+- display the state field as an empty field when page loads rather than only displaying after a country is selectedCountry.
+- make the country and state elements appear like an form input field with the down arrow to open dropdown on the right side of the country input div element
+- enable the height of the country list div element to be set and default to a value that would display 12-15 countries. Make this div element scrollable.
+- ensure that the className can be set in the page that implements the components for full customization of the style

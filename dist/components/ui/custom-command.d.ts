@@ -23,8 +23,4 @@ export declare const CommandGroup: React.FC<{
     children: ReactNode;
 }>;
 export declare const CommandItem: React.FC<CommandItemProps>;
-export declare const CommandList: React.FC<{
-    children: ReactNode;
-}>;
-export declare const CommandSeparator: React.FC;
 export {};

@@ -1,0 +1,9 @@
+**/*.png
+**/*.svg
+**/*.avif
+**/.DS_Store
+**/*.stories.*
+**/stories/*
+stories/*
+data/countries.json
+data/states.json

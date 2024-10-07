@@ -1,0 +1,850 @@
+The following text is a Git repository with code. The structure of the text are sections that begin with ----, followed by a single line containing the file path and file name, followed by a variable amount of lines containing the file contents. The text representing the Git repository ends when the symbols --END-- are encounted. Any further text beyond --END-- are meant to be interpreted as instructions using the aforementioned Git repository as context.
+--------------------------------------------------------------------------------
+index.ts
+export { CountryStateInput, CountryInput, StateInput, Country, State, CountryInputProps, StateInputProps } from "./components/forms/country-state-input";
+
+--------------------------------------------------------------------------------
+components/forms/state-input.tsx
+import React, { useState, useCallback, useMemo } from "react";
+import statesData from "../../data/states.json";
+import { State, StateInputProps } from "../../lib/types";
+import { DropdownInput, DropdownList } from "./dropdown";
+
+export const StateInput: React.FC<StateInputProps> = ({ selectedCountryId, onSelect, className, inputClassName }) => {
+    const [isOpen, setIsOpen] = useState(false);
+    const [selectedState, setSelectedState] = useState<State | null>(null);
+    const [filter, setFilter] = useState("");
+
+    const states = useMemo(() => statesData as State[], []);
+
+    const filteredStates = useMemo(
+        () =>
+            states
+                .filter((state) => state.country_id === selectedCountryId)
+                .filter((state) => state.name.toLowerCase().includes(filter.toLowerCase())),
+        [states, selectedCountryId, filter],
+    );
+
+    const handleSelect = useCallback(
+        (state: State) => {
+            setSelectedState(state);
+            onSelect(state);
+            setIsOpen(false);
+        },
+        [onSelect],
+    );
+
+    return (
+        <div className={`relative ${className || ''}`}>
+            <DropdownInput
+                placeholder="Select a state"
+                value={selectedState?.name || ""}
+                onClick={() => setIsOpen(!isOpen)}
+                disabled={!selectedCountryId}
+                inputClassName={inputClassName}
+            />
+            {isOpen && (
+                <DropdownList
+                    items={filteredStates}
+                    renderItem={(item) => <span>{item.name}</span>}
+                    onSelect={(item) => {
+                        if (!("emoji" in item)) {
+                            handleSelect(item as State);
+                        }
+                    }}
+                    filter={filter}
+                    setFilter={setFilter}
+                />
+            )}
+        </div>
+    );
+};
+--------------------------------------------------------------------------------
+components/forms/country-state-input.tsx
+import React, { useState, useCallback } from "react";
+import { CountryStateInputProps, Country } from "../../lib/types";
+import { CountryInput } from "./country-input";
+import { StateInput } from "./state-input";
+
+interface ExtendedCountryStateInputProps extends CountryStateInputProps {
+  layout?: 'horizontal' | 'vertical';
+  containerClassName?: string;
+  countryClassName?: string;
+  stateClassName?: string;
+  countryInputClassName?: string;
+  stateInputClassName?: string;
+}
+
+export const CountryStateInput: React.FC<ExtendedCountryStateInputProps> = ({
+  onSelectCountry,
+  onSelectState,
+  containerClassName,
+  countryClassName,
+  stateClassName,
+  layout = 'vertical',
+  countryInputClassName,
+  stateInputClassName
+}) => {
+  const [selectedCountry, setSelectedCountry] = useState<Country | null>(null);
+
+  const handleCountrySelect = useCallback(
+    (country: Country) => {
+      setSelectedCountry(country);
+      onSelectCountry(country);
+    },
+    [onSelectCountry]
+  );
+
+  const containerClass = `${containerClassName || ''} ${layout === 'horizontal' ? 'flex flex-row space-x-4' : 'flex flex-col space-y-4'}`;
+
+  return (
+    <div className={containerClass}>
+      <CountryInput 
+        onSelect={handleCountrySelect} 
+        className={`flex-1 ${countryClassName || ''}`} 
+        inputClassName={countryInputClassName || ''}
+      />
+      <StateInput
+        selectedCountryId={selectedCountry?.id || null}
+        onSelect={onSelectState}
+        className={`flex-1 ${stateClassName || ''}`}
+        inputClassName={stateInputClassName || ''}  
+      />
+    </div>
+  );
+};
+
+// Re-export components for easier imports
+export { CountryInput } from "./country-input";
+export { StateInput } from "./state-input";
+export type { Country, State, CountryInputProps, StateInputProps } from "../../lib/types";
+--------------------------------------------------------------------------------
+components/forms/dropdown.tsx
+import React from "react";
+import { ChevronDown, Search } from "lucide-react";
+import { DropdownInputProps, DropdownListProps, Country } from "../../lib/types";
+
+interface ExtendedDropdownInputProps extends DropdownInputProps {
+    inputClassName?: string;
+}
+
+export const DropdownInput: React.FC<ExtendedDropdownInputProps> = ({
+    placeholder,
+    value,
+    onClick,
+    className,
+    inputClassName,
+    disabled,
+}) => (
+    <div
+        className={`relative ${className} ${disabled ? "cursor-not-allowed opacity-50" : "cursor-pointer"}`}
+        onClick={disabled ? undefined : onClick}
+    >
+        <div className="flex w-full items-center rounded-md border border-gray-300 bg-white mb-2">
+            <input
+                type="text"
+                readOnly
+                value={value || placeholder}
+                placeholder={placeholder}
+                className={`flex-1 cursor-pointer rounded-md border border-gray-300 bg-white ${
+                    value ? "text-gray-800" : "text-gray-500"
+                } ${disabled ? "cursor-not-allowed" : ""} ${inputClassName || ""}`}
+                style={{ paddingRight: "48px" }} // Increase padding-right to allow space for the icon
+                disabled={disabled}
+            />
+            <ChevronDown
+                className="pointer-events-none h-5 w-5 text-gray-700 mr-3"
+                stroke="gray"
+            />
+        </div>
+    </div>
+);
+
+export const DropdownList: React.FC<DropdownListProps> = ({
+    items,
+    onSelect,
+    filter,
+    setFilter,
+    className,
+    maxHeight = "300px",
+}) => (
+    <div className={`absolute z-10 mt-1 w-full rounded-md border border-gray-300 bg-gray-800 shadow-lg ${className}`}>
+        <div className="border-b border-gray-700 p-2" style={{ paddingBottom: "0.25rem", paddingTop: "0.5rem" }}>
+            <div className="flex items-center rounded-md bg-gray-700">
+                <Search className="ml-3 h-4 w-4 text-gray-400" style={{ marginRight: "0.5rem" }} />
+                <input
+                    type="text"
+                    value={filter}
+                    onChange={(e) => setFilter(e.target.value)}
+                    placeholder="Search..."
+                    className="ml-2 w-full rounded-md bg-gray-700 text-white placeholder-gray-400 outline-none p-1"
+                    style={{ padding: "0.25rem"  }}
+                />
+            </div>
+        </div>
+        <div style={{ maxHeight, overflowY: "auto", paddingTop: "0.25rem" }} className="mt-2 py-2">
+            {items.map((item) => (
+                <div
+                    key={item.id}
+                    className="cursor-pointer px-4 py-2 text-white hover:bg-gray-700"
+                    onClick={() => onSelect(item)}
+                >
+                    {renderCountryItem(item as Country)}
+                </div>
+            ))}
+        </div>
+    </div>
+);
+
+const renderCountryItem = (country: Country) => (
+    <div className="flex items-center gap-2">
+        <span className="ml-2 mr-3" style={{ marginLeft: "1rem", marginRight: "1rem" }}>{country.emoji}</span>
+        <span>{country.name}</span>
+    </div>
+);
+
+--------------------------------------------------------------------------------
+components/forms/country-input.tsx
+import React, { useState, useCallback, useMemo } from "react";
+import countriesData from "../../data/countries.json";
+import { Country, CountryInputProps } from "../../lib/types";
+import { DropdownInput, DropdownList } from "./dropdown";
+
+export const CountryInput: React.FC<CountryInputProps> = ({ onSelect, className, inputClassName }) => {
+    const [isOpen, setIsOpen] = useState(false);
+    const [selectedCountry, setSelectedCountry] = useState<Country | null>(null);
+    const [filter, setFilter] = useState("");
+
+    const countries = useMemo(() => countriesData as Country[], []);
+
+    const filteredCountries = useMemo(
+        () => countries.filter((country) => country.name.toLowerCase().includes(filter.toLowerCase())),
+        [countries, filter],
+    );
+
+    const handleSelect = useCallback(
+        (country: Country) => {
+            setSelectedCountry(country);
+            onSelect(country);
+            setIsOpen(false);
+        },
+        [onSelect],
+    );
+
+    return (
+        <div className={`relative ${className || ''}`}>
+            <DropdownInput
+                placeholder="Select a country"
+                value={selectedCountry ? `${selectedCountry.emoji} ${selectedCountry.name}` : ""}
+                onClick={() => setIsOpen(!isOpen)}
+                inputClassName={inputClassName}
+            />
+            {isOpen && (
+                <DropdownList
+                    items={filteredCountries}
+                    renderItem={(item) => (
+                        <div className="flex items-center">
+                            <span className="mr-2">{(item as Country).emoji}</span>
+                            <span>{item.name}</span>
+                        </div>
+                    )}
+                    onSelect={(item) => {
+                        if ("emoji" in item) {
+                            handleSelect(item as Country);
+                        }
+                    }}
+                    filter={filter}
+                    setFilter={setFilter}
+                />
+            )}
+        </div>
+    );
+};
+--------------------------------------------------------------------------------
+lib/types.ts
+export interface Country {
+    id: number;
+    name: string;
+    emoji: string;
+}
+
+export interface State {
+    id: number;
+    name: string;
+    country_id: number;
+}
+
+export type DropdownItem = Country | State;
+
+export interface CountryInputProps {
+    onSelect: (country: Country) => void;
+    className?: string;
+    inputClassName?: string;
+}
+
+export interface StateInputProps {
+    selectedCountryId: number | null;
+    onSelect: (state: State) => void;
+    className?: string;
+    inputClassName?: string;
+}
+
+export interface DropdownInputProps {
+    placeholder: string;
+    value: string;
+    onClick: () => void;
+    className?: string;
+    inputClassName?: string;
+    disabled?: boolean;
+}
+
+export interface DropdownListProps {
+    items: DropdownItem[];
+    renderItem: (item: DropdownItem) => React.ReactNode;
+    onSelect: (item: DropdownItem) => void;
+    filter: string;
+    setFilter: (filter: string) => void;
+    className?: string;
+    maxHeight?: string;
+}
+
+export interface CountryStateInputProps {
+    onSelectCountry: (country: Country) => void;
+    onSelectState: (state: State) => void;
+    containerClassName?: string;
+    countryClassName?: string;
+    stateClassName?: string;
+    countryInputClassName?: string;
+    stateInputClassName?: string;
+}
+--------------------------------------------------------------------------------
+data/states-sample.json
+[
+    {
+        "id": 1,
+        "name": "California",
+        "country_id": 1,
+        "country_code": "US",
+        "country_name": "United States",
+        "state_code": "CA",
+        "type": "state",
+        "latitude": "36.77826100",
+        "longitude": "-119.41793240"
+    },
+    {
+        "id": 2,
+        "name": "Texas",
+        "country_id": 1,
+        "country_code": "US",
+        "country_name": "United States",
+        "state_code": "TX",
+        "type": "state",
+        "latitude": "31.96859880",
+        "longitude": "-99.90181310"
+    },
+    {
+        "id": 3,
+        "name": "New York",
+        "country_id": 1,
+        "country_code": "US",
+        "country_name": "United States",
+        "state_code": "NY",
+        "type": "state",
+        "latitude": "40.71277530",
+        "longitude": "-74.00597280"
+    },
+    {
+        "id": 4,
+        "name": "Ontario",
+        "country_id": 2,
+        "country_code": "CA",
+        "country_name": "Canada",
+        "state_code": "ON",
+        "type": "province",
+        "latitude": "51.25377500",
+        "longitude": "-85.32321400"
+    },
+    {
+        "id": 5,
+        "name": "Quebec",
+        "country_id": 2,
+        "country_code": "CA",
+        "country_name": "Canada",
+        "state_code": "QC",
+        "type": "province",
+        "latitude": "52.93991590",
+        "longitude": "-73.54913610"
+    },
+    {
+        "id": 6,
+        "name": "Jalisco",
+        "country_id": 3,
+        "country_code": "MX",
+        "country_name": "Mexico",
+        "state_code": "JAL",
+        "type": "state",
+        "latitude": "20.65953820",
+        "longitude": "-103.34943760"
+    },
+    {
+        "id": 7,
+        "name": "England",
+        "country_id": 4,
+        "country_code": "GB",
+        "country_name": "United Kingdom",
+        "state_code": "ENG",
+        "type": "country",
+        "latitude": "52.35551770",
+        "longitude": "-1.17431970"
+    },
+    {
+        "id": 8,
+        "name": "Île-de-France",
+        "country_id": 5,
+        "country_code": "FR",
+        "country_name": "France",
+        "state_code": "IDF",
+        "type": "metropolitan region",
+        "latitude": "48.85661400",
+        "longitude": "2.35222190"
+    },
+    {
+        "id": 9,
+        "name": "Bavaria",
+        "country_id": 6,
+        "country_code": "DE",
+        "country_name": "Germany",
+        "state_code": "BY",
+        "type": "state",
+        "latitude": "48.79044720",
+        "longitude": "11.49788950"
+    },
+    {
+        "id": 10,
+        "name": "Tokyo",
+        "country_id": 7,
+        "country_code": "JP",
+        "country_name": "Japan",
+        "state_code": "13",
+        "type": "prefecture",
+        "latitude": "35.67619190",
+        "longitude": "139.65031060"
+    }
+]
+
+--------------------------------------------------------------------------------
+data/countries-sample.json
+[
+    {
+        "id": 1,
+        "name": "United States",
+        "iso3": "USA",
+        "iso2": "US",
+        "numeric_code": "840",
+        "phone_code": "1",
+        "capital": "Washington",
+        "currency": "USD",
+        "currency_name": "United States dollar",
+        "currency_symbol": "$",
+        "tld": ".us",
+        "native": "United States",
+        "region": "Americas",
+        "subregion": "Northern America",
+        "timezones": [
+            {
+                "zoneName": "America/New_York",
+                "gmtOffset": -18000,
+                "gmtOffsetName": "UTC-05:00",
+                "abbreviation": "EST",
+                "tzName": "Eastern Standard Time"
+            }
+        ],
+        "translations": {
+            "kr": "미국",
+            "pt-BR": "Estados Unidos",
+            "pt": "Estados Unidos",
+            "nl": "Verenigde Staten",
+            "hr": "Sjedinjene Američke Države",
+            "fa": "ایالات متحده آمریکا",
+            "de": "Vereinigte Staaten von Amerika",
+            "es": "Estados Unidos",
+            "fr": "États-Unis",
+            "ja": "アメリカ合衆国"
+        },
+        "latitude": "38.00000000",
+        "longitude": "-97.00000000",
+        "emoji": "🇺🇸",
+        "emojiU": "U+1F1FA U+1F1F8"
+    },
+    {
+        "id": 2,
+        "name": "Canada",
+        "iso3": "CAN",
+        "iso2": "CA",
+        "numeric_code": "124",
+        "phone_code": "1",
+        "capital": "Ottawa",
+        "currency": "CAD",
+        "currency_name": "Canadian dollar",
+        "currency_symbol": "$",
+        "tld": ".ca",
+        "native": "Canada",
+        "region": "Americas",
+        "subregion": "Northern America",
+        "timezones": [
+            {
+                "zoneName": "America/Toronto",
+                "gmtOffset": -18000,
+                "gmtOffsetName": "UTC-05:00",
+                "abbreviation": "EST",
+                "tzName": "Eastern Standard Time"
+            }
+        ],
+        "translations": {
+            "kr": "캐나다",
+            "pt-BR": "Canadá",
+            "pt": "Canadá",
+            "nl": "Canada",
+            "hr": "Kanada",
+            "fa": "کانادا",
+            "de": "Kanada",
+            "es": "Canadá",
+            "fr": "Canada",
+            "ja": "カナダ"
+        },
+        "latitude": "60.00000000",
+        "longitude": "-95.00000000",
+        "emoji": "🇨🇦",
+        "emojiU": "U+1F1E8 U+1F1E6"
+    },
+    {
+        "id": 3,
+        "name": "Mexico",
+        "iso3": "MEX",
+        "iso2": "MX",
+        "numeric_code": "484",
+        "phone_code": "52",
+        "capital": "Mexico City",
+        "currency": "MXN",
+        "currency_name": "Mexican peso",
+        "currency_symbol": "$",
+        "tld": ".mx",
+        "native": "México",
+        "region": "Americas",
+        "subregion": "Central America",
+        "timezones": [
+            {
+                "zoneName": "America/Mexico_City",
+                "gmtOffset": -21600,
+                "gmtOffsetName": "UTC-06:00",
+                "abbreviation": "CST",
+                "tzName": "Central Standard Time"
+            }
+        ],
+        "translations": {
+            "kr": "멕시코",
+            "pt-BR": "México",
+            "pt": "México",
+            "nl": "Mexico",
+            "hr": "Meksiko",
+            "fa": "مکزیک",
+            "de": "Mexiko",
+            "es": "México",
+            "fr": "Mexique",
+            "ja": "メキシコ"
+        },
+        "latitude": "23.00000000",
+        "longitude": "-102.00000000",
+        "emoji": "🇲🇽",
+        "emojiU": "U+1F1F2 U+1F1FD"
+    },
+    {
+        "id": 4,
+        "name": "United Kingdom",
+        "iso3": "GBR",
+        "iso2": "GB",
+        "numeric_code": "826",
+        "phone_code": "44",
+        "capital": "London",
+        "currency": "GBP",
+        "currency_name": "British pound",
+        "currency_symbol": "£",
+        "tld": ".uk",
+        "native": "United Kingdom",
+        "region": "Europe",
+        "subregion": "Northern Europe",
+        "timezones": [
+            {
+                "zoneName": "Europe/London",
+                "gmtOffset": 0,
+                "gmtOffsetName": "UTC±00",
+                "abbreviation": "GMT",
+                "tzName": "Greenwich Mean Time"
+            }
+        ],
+        "translations": {
+            "kr": "영국",
+            "pt-BR": "Reino Unido",
+            "pt": "Reino Unido",
+            "nl": "Verenigd Koninkrijk",
+            "hr": "Ujedinjeno Kraljevstvo",
+            "fa": "بریتانیای کبیر و ایرلند شمالی",
+            "de": "Vereinigtes Königreich",
+            "es": "Reino Unido",
+            "fr": "Royaume-Uni",
+            "ja": "イギリス"
+        },
+        "latitude": "54.00000000",
+        "longitude": "-2.00000000",
+        "emoji": "🇬🇧",
+        "emojiU": "U+1F1EC U+1F1E7"
+    },
+    {
+        "id": 5,
+        "name": "France",
+        "iso3": "FRA",
+        "iso2": "FR",
+        "numeric_code": "250",
+        "phone_code": "33",
+        "capital": "Paris",
+        "currency": "EUR",
+        "currency_name": "Euro",
+        "currency_symbol": "€",
+        "tld": ".fr",
+        "native": "France",
+        "region": "Europe",
+        "subregion": "Western Europe",
+        "timezones": [
+            {
+                "zoneName": "Europe/Paris",
+                "gmtOffset": 3600,
+                "gmtOffsetName": "UTC+01:00",
+                "abbreviation": "CET",
+                "tzName": "Central European Time"
+            }
+        ],
+        "translations": {
+            "kr": "프랑스",
+            "pt-BR": "França",
+            "pt": "França",
+            "nl": "Frankrijk",
+            "hr": "Francuska",
+            "fa": "فرانسه",
+            "de": "Frankreich",
+            "es": "Francia",
+            "fr": "France",
+            "ja": "フランス"
+        },
+        "latitude": "46.00000000",
+        "longitude": "2.00000000",
+        "emoji": "🇫🇷",
+        "emojiU": "U+1F1EB U+1F1F7"
+    },
+    {
+        "id": 6,
+        "name": "Germany",
+        "iso3": "DEU",
+        "iso2": "DE",
+        "numeric_code": "276",
+        "phone_code": "49",
+        "capital": "Berlin",
+        "currency": "EUR",
+        "currency_name": "Euro",
+        "currency_symbol": "€",
+        "tld": ".de",
+        "native": "Deutschland",
+        "region": "Europe",
+        "subregion": "Western Europe",
+        "timezones": [
+            {
+                "zoneName": "Europe/Berlin",
+                "gmtOffset": 3600,
+                "gmtOffsetName": "UTC+01:00",
+                "abbreviation": "CET",
+                "tzName": "Central European Time"
+            }
+        ],
+        "translations": {
+            "kr": "독일",
+            "pt-BR": "Alemanha",
+            "pt": "Alemanha",
+            "nl": "Duitsland",
+            "hr": "Njemačka",
+            "fa": "آلمان",
+            "de": "Deutschland",
+            "es": "Alemania",
+            "fr": "Allemagne",
+            "ja": "ドイツ"
+        },
+        "latitude": "51.00000000",
+        "longitude": "9.00000000",
+        "emoji": "🇩🇪",
+        "emojiU": "U+1F1E9 U+1F1EA"
+    },
+    {
+        "id": 7,
+        "name": "Japan",
+        "iso3": "JPN",
+        "iso2": "JP",
+        "numeric_code": "392",
+        "phone_code": "81",
+        "capital": "Tokyo",
+        "currency": "JPY",
+        "currency_name": "Japanese yen",
+        "currency_symbol": "¥",
+        "tld": ".jp",
+        "native": "日本",
+        "region": "Asia",
+        "subregion": "Eastern Asia",
+        "timezones": [
+            {
+                "zoneName": "Asia/Tokyo",
+                "gmtOffset": 32400,
+                "gmtOffsetName": "UTC+09:00",
+                "abbreviation": "JST",
+                "tzName": "Japan Standard Time"
+            }
+        ],
+        "translations": {
+            "kr": "일본",
+            "pt-BR": "Japão",
+            "pt": "Japão",
+            "nl": "Japan",
+            "hr": "Japan",
+            "fa": "ژاپن",
+            "de": "Japan",
+            "es": "Japón",
+            "fr": "Japon",
+            "ja": "日本"
+        },
+        "latitude": "36.00000000",
+        "longitude": "138.00000000",
+        "emoji": "🇯🇵",
+        "emojiU": "U+1F1EF U+1F1F5"
+    },
+    {
+        "id": 8,
+        "name": "Australia",
+        "iso3": "AUS",
+        "iso2": "AU",
+        "numeric_code": "036",
+        "phone_code": "61",
+        "capital": "Canberra",
+        "currency": "AUD",
+        "currency_name": "Australian dollar",
+        "currency_symbol": "$",
+        "tld": ".au",
+        "native": "Australia",
+        "region": "Oceania",
+        "subregion": "Australia and New Zealand",
+        "timezones": [
+            {
+                "zoneName": "Australia/Sydney",
+                "gmtOffset": 39600,
+                "gmtOffsetName": "UTC+11:00",
+                "abbreviation": "AEDT",
+                "tzName": "Australian Eastern Daylight Saving Time"
+            }
+        ],
+        "translations": {
+            "kr": "호주",
+            "pt-BR": "Austrália",
+            "pt": "Austrália",
+            "nl": "Australië",
+            "hr": "Australija",
+            "fa": "استرالیا",
+            "de": "Australien",
+            "es": "Australia",
+            "fr": "Australie",
+            "ja": "オーストラリア"
+        },
+        "latitude": "-27.00000000",
+        "longitude": "133.00000000",
+        "emoji": "🇦🇺",
+        "emojiU": "U+1F1E6 U+1F1FA"
+    },
+    {
+        "id": 9,
+        "name": "Brazil",
+        "iso3": "BRA",
+        "iso2": "BR",
+        "numeric_code": "076",
+        "phone_code": "55",
+        "capital": "Brasilia",
+        "currency": "BRL",
+        "currency_name": "Brazilian real",
+        "currency_symbol": "R$",
+        "tld": ".br",
+        "native": "Brasil",
+        "region": "Americas",
+        "subregion": "South America",
+        "timezones": [
+            {
+                "zoneName": "America/Sao_Paulo",
+                "gmtOffset": -10800,
+                "gmtOffsetName": "UTC-03:00",
+                "abbreviation": "BRT",
+                "tzName": "Brasília Time"
+            }
+        ],
+        "translations": {
+            "kr": "브라질",
+            "pt-BR": "Brasil",
+            "pt": "Brasil",
+            "nl": "Brazilië",
+            "hr": "Brazil",
+            "fa": "برزیل",
+            "de": "Brasilien",
+            "es": "Brasil",
+            "fr": "Brésil",
+            "ja": "ブラジル"
+        },
+        "latitude": "-10.00000000",
+        "longitude": "-55.00000000",
+        "emoji": "🇧🇷",
+        "emojiU": "U+1F1E7 U+1F1F7"
+    },
+    {
+        "id": 10,
+        "name": "China",
+        "iso3": "CHN",
+        "iso2": "CN",
+        "numeric_code": "156",
+        "phone_code": "86",
+        "capital": "Beijing",
+        "currency": "CNY",
+        "currency_name": "Chinese yuan",
+        "currency_symbol": "¥",
+        "tld": ".cn",
+        "native": "中国",
+        "region": "Asia",
+        "subregion": "Eastern Asia",
+        "timezones": [
+            {
+                "zoneName": "Asia/Shanghai",
+                "gmtOffset": 28800,
+                "gmtOffsetName": "UTC+08:00",
+                "abbreviation": "CST",
+                "tzName": "China Standard Time"
+            }
+        ],
+        "translations": {
+            "kr": "중국",
+            "pt-BR": "China",
+            "pt": "China",
+            "nl": "China",
+            "hr": "Kina",
+            "fa": "چین",
+            "de": "China",
+            "es": "China",
+            "fr": "Chine",
+            "ja": "中国"
+        },
+        "latitude": "35.00000000",
+        "longitude": "105.00000000",
+        "emoji": "🇨🇳",
+        "emojiU": "U+1F1E8 U+1F1F3"
+    }
+]
+
+--END--

@@ -1,3 +1,6 @@
 import React from "react";
-declare const CountryState: () => React.JSX.Element;
+interface CountryStateProps {
+    className?: string;
+}
+declare const CountryState: React.FC<CountryStateProps>;
 export default CountryState;

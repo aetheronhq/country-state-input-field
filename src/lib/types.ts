@@ -1,45 +1,55 @@
-export interface CountryProps {
+export interface Country {
     id: number;
     name: string;
-    iso3: string;
-    iso2: string;
-    numeric_code: string;
-    phone_code: string;
-    capital: string;
-    currency: string;
-    currency_name: string;
-    currency_symbol: string;
-    tld: string;
-    native: string | null;
-    region: string;
-    region_id: string | null;
-    subregion: string;
-    subregion_id: string | null;
-    nationality: string;
-    timezones: Timezone[] | null;
-    translations: { [key: string]: string | undefined };
-    latitude: string;
-    longitude: string;
     emoji: string;
-    emojiU: string;
 }
 
-interface Timezone {
-    zoneName: string;
-    gmtOffset: number;
-    gmtOffsetName: string;
-    abbreviation: string;
-    tzName: string;
-}
-
-export interface StateProps {
+export interface State {
     id: number;
     name: string;
     country_id: number;
-    country_code: string;
-    country_name: string;
-    state_code: string;
-    type: string | null;
-    latitude: string;
-    longitude: string;
+}
+
+export type DropdownItem = Country | State;
+
+export interface CountryInputProps {
+    onSelect: (country: Country) => void;
+    className?: string;
+    inputClassName?: string;
+}
+
+export interface StateInputProps {
+    selectedCountryId: number | null;
+    onSelect: (state: State) => void;
+    className?: string;
+    inputClassName?: string;
+}
+
+export interface DropdownInputProps {
+    placeholder: string;
+    value: string;
+    onClick: () => void;
+    className?: string;
+    inputClassName?: string;
+    disabled?: boolean;
+}
+
+export interface DropdownListProps {
+    items: DropdownItem[];
+    renderItem: (item: DropdownItem) => React.ReactNode;
+    onSelect: (item: DropdownItem) => void;
+    filter: string;
+    setFilter: (filter: string) => void;
+    className?: string;
+    maxHeight?: string;
+}
+
+export interface CountryStateInputProps {
+    onSelectCountry: (country: Country) => void;
+    onSelectState: (state: State) => void;
+    containerClassName?: string;
+    countryClassName?: string;
+    stateClassName?: string;
+    countryInputClassName?: string;
+    stateInputClassName?: string;
 }

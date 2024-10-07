@@ -1,2 +1,9 @@
-export { default as CountryDropdown } from "./components/dropdown/countries";
-export { default as StateDropdown } from "./components/dropdown/states";
+export {
+    CountryStateInput,
+    CountryInput,
+    StateInput,
+    Country,
+    State,
+    CountryInputProps,
+    StateInputProps,
+} from "./components/forms/country-state-input";

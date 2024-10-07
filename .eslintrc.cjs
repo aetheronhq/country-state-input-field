@@ -16,7 +16,8 @@ module.exports = {
         },
     },
     rules: {
-        // Add any specific rules you want for JavaScript files
+        // Disable the no-html-link-for-pages rule
+        "no-html-link-for-pages": "off",
     },
     overrides: [
         {
@@ -26,6 +27,7 @@ module.exports = {
             plugins: ["@typescript-eslint", "react"],
             rules: {
                 // Add any TypeScript-specific rules here
+                "no-html-link-for-pages": "off",
             },
         },
         {
@@ -36,5 +38,5 @@ module.exports = {
             },
         },
     ],
-    ignorePatterns: ["dist/**/*"],
+    ignorePatterns: ["dist/**/*", "country-state-test-app/**/*", "scripts/**/*", "docs/**/*"],
 };
