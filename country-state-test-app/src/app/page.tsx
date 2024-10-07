@@ -5,8 +5,10 @@ import { CountryInput, StateInput, CountryStateInput } from "country-state-input
 
 export default function Home() {
     const [selectedCountryId, setSelectedCountryId] = useState<number | null>(null);
+    const [selectedCountryName, setSelectedCountryName] = useState<string | null>(null);
     const [selectedCountryCode, setSelectedCountryCode] = useState<string | null>(null);
     const [selectedStateId, setSelectedStateId] = useState<number | null>(null);
+    const [selectedStateName, setSelectedStateName] = useState<string | null>(null);
 
     return (
         <div className="flex flex-col items-center bg-[#0f0f11] p-8 text-white">
@@ -17,11 +19,13 @@ export default function Home() {
                         <CountryStateInput
                             onSelectCountry={(country, countryCode) => {
                                 setSelectedCountryId(country.id);
+                                setSelectedCountryName(country.name);
                                 setSelectedCountryCode(countryCode);
                                 console.log(`Selected country: ${country.name}, Country Code: ${countryCode}`);
                             }}
                             onSelectState={(state) => {
                                 setSelectedStateId(state.id);
+                                setSelectedStateName(state.name);
                                 console.log(`Selected state: ${state.name}`);
                             }}
                             containerClassName="w-full flex flex-wrap gap-4"
@@ -40,6 +44,7 @@ export default function Home() {
                         <CountryInput
                             onSelect={(country, countryCode) => {
                                 setSelectedCountryId(country.id);
+                                setSelectedCountryName(country.name);
                                 setSelectedCountryCode(countryCode);
                                 console.log(`Selected country: ${country.name}, Country Code: ${countryCode}`);
                             }}
@@ -50,6 +55,7 @@ export default function Home() {
                             selectedCountryId={selectedCountryId}
                             onSelect={(state) => {
                                 setSelectedStateId(state.id);
+                                setSelectedStateName(state.name);
                                 console.log(`Selected state: ${state.name}`);
                             }}
                             className="w-full"
@@ -61,8 +67,10 @@ export default function Home() {
                 <div className="mt-8 text-center">
                     <h2 className="mb-2 text-xl font-bold">Selected Values:</h2>
                     <p>Country ID: {selectedCountryId}</p>
+                    <p>Country Name: {selectedCountryName}</p>
                     <p>Country Code: {selectedCountryCode}</p>
                     <p>State ID: {selectedStateId}</p>
+                    <p>State Name: {selectedStateName}</p>
                 </div>
             </div>
         </div>
